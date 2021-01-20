@@ -1,6 +1,7 @@
 export type IUserAuth = {
   user: IUser;
   token: IToken;
+  error?: string;
 };
 
 export type IUser = {
