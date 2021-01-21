@@ -4,6 +4,7 @@ $main-text-color: #212529;
 $primary-accent-color: #0d6efd;
 $secondary-accent-color: #22bf75;
 $third-accent-color: #fa5f54;
+$danger-color: #dc3545;
 
 $primary-btn-color: #fd6d02;
 
@@ -56,4 +57,9 @@ $big-numbers: 2rem; // 32px
   color: $main-text-color;
 }
 
+.App {
+  max-width: 120rem;
+}
+
 @import "./pages/loginPage/loginPage.scss";
+@import "./pages/signUpPage/signUpPage.scss";
