@@ -1,13 +1,12 @@
 import { Action } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { createUser } from "../../services/auth.services";
 import { callAPI } from "../../services/callAPI";
 import { IUserAuth, IUserLogIn, IUserSignUp } from "../../types";
-
 import { RootState } from "../reducers";
 import {
   AuthenticateActionTypes,
   AUTHENTICATE_USER,
+  SET_ERROR,
   SET_USER_DATA
 } from "../types";
 
@@ -19,13 +18,17 @@ type AppThunk<ReturnType = any> = ThunkAction<
 >;
 
 // create new user
-export const signUpUser = (userData: IUserSignUp): AppThunk => async (
+export const signUpUser = (signUpData: IUserSignUp): AppThunk => async (
   dispatch
 ) => {
   try {
-    const response = await createUser(userData);
-    console.log("Created User: ", response);
-    const { token, user }: IUserAuth = response;
+    const response = await callAPI({
+      url: "/signup",
+      method: "POST",
+      data: signUpData
+    });
+
+    const { token, user, error }: IUserAuth = response;
     dispatch({
       type: AUTHENTICATE_USER,
       payload: token
@@ -33,6 +36,10 @@ export const signUpUser = (userData: IUserSignUp): AppThunk => async (
     dispatch({
       type: SET_USER_DATA,
       payload: user
+    });
+    dispatch({
+      type: SET_ERROR,
+      payload: error
     });
   } catch (error) {
     console.log(error);
@@ -49,7 +56,8 @@ export const logInUser = (loginData: IUserLogIn): AppThunk => async (
       data: loginData
     });
 
-    const { token, user }: IUserAuth = response;
+    const { token, user, error }: IUserAuth = response;
+
     dispatch({
       type: AUTHENTICATE_USER,
       payload: token
@@ -57,6 +65,10 @@ export const logInUser = (loginData: IUserLogIn): AppThunk => async (
     dispatch({
       type: SET_USER_DATA,
       payload: user
+    });
+    dispatch({
+      type: SET_ERROR,
+      payload: error
     });
   } catch (error) {
     console.log(error);
