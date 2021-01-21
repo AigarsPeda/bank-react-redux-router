@@ -4,6 +4,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
 
 module.exports = {
+  entry: {
+    bundle: "./src/index.tsx"
+  },
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "bundle.js",
@@ -40,8 +43,22 @@ module.exports = {
         ]
       },
       {
-        test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              url: false
+            }
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              implementation: require("dart-sass")
+            }
+          }
+        ]
       }
     ]
   },
@@ -64,12 +81,5 @@ module.exports = {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       }
     })
-  ],
-
-  devServer: {
-    // This is necessary for react-route-dom to work
-    contentBase: path.join(__dirname, "build"),
-    historyApiFallback: true,
-    port: 5000
-  }
+  ]
 };
