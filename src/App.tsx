@@ -2,10 +2,10 @@ import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
-import NavBar from "./components/NavBar";
 import store, { persistor } from "./redux/store";
 import AppRoutes from "./routes/AppRoutes";
-import "./styles.scss";
+
+import "./index.scss";
 
 const App: React.FC = () => {
   // const location = useLocation();
@@ -22,7 +22,6 @@ const App: React.FC = () => {
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <div className="App">
-            <NavBar />
             <AppRoutes />
           </div>
         </PersistGate>
