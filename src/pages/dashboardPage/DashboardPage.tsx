@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect, RouteChildrenProps } from "react-router-dom";
+import AccountOverview from "../../components/AccountOverview/AccountOverview";
+import NavBar from "../../components/NavBat/NavBar";
 import { RootState } from "../../redux/reducers";
-import { callAPI } from "../../services/callAPI";
 
 type Props = ReturnType<typeof mapStateToProps> &
   typeof mapDispatchToProps &
@@ -15,16 +16,22 @@ const DashboardPage: React.FC<Props> = (props) => {
     return <Redirect to="/login" />;
   }
 
-  const test = async () => {
-    const res = await callAPI({ url: "/transactions/1", method: "get" });
+  // const test = async () => {
+  //   const res = await callAPI({ url: "/transactions/1", method: "get" });
 
-    console.log("RES: ", res);
-  };
+  //   console.log("RES: ", res);
+  // };
 
   return (
-    <div>
-      <h1>Dashboard Page</h1>
-      <button onClick={test}>Test</button>
+    <div className="dashboard-page">
+      <div className="dashboard-actions">
+        <h3>Search</h3>
+      </div>
+
+      <main className="dashboard-main">
+        <NavBar />
+        <AccountOverview />
+      </main>
     </div>
   );
 };
