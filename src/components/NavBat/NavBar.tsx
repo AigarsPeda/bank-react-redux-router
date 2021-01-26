@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { RootState } from "../../redux/reducers";
+import { RootStateType } from "../../redux/reducers";
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
@@ -42,7 +42,7 @@ const NavBar: React.FC<Props> = (props) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootStateType) => ({
   user: state.user.user
 });
 
