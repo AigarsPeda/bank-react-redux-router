@@ -37,7 +37,7 @@ const AccountOverview: React.FC<Props> = React.memo(() => {
     setCardsId(e.target.value);
   };
 
-  const income = () => {
+  const getIncomeValue = () => {
     return transactions.reduce((a: number, b: ITransactions) => {
       if (b.deposit_amount === null) {
         return a;
@@ -47,7 +47,7 @@ const AccountOverview: React.FC<Props> = React.memo(() => {
     }, 0);
   };
 
-  const outcome = () => {
+  const getOutcomeValue = () => {
     return transactions.reduce((a: number, b: ITransactions) => {
       if (b.withdraw_amount === null) {
         return a;
@@ -57,50 +57,51 @@ const AccountOverview: React.FC<Props> = React.memo(() => {
     }, 0);
   };
 
-  const labelValues = transactions.map((transaction) => {
+  const reducedTransactionsUniquePerDay = transactions.reduce(
+    (accumulator: ITransactions[], current) => {
+      if (
+        !accumulator.some(
+          (tran: ITransactions) =>
+            tran.formatted_date === current.formatted_date
+        )
+      ) {
+        accumulator.push(current);
+      } else {
+        const objIndex = accumulator.findIndex(
+          (obj) => obj.formatted_date == current.formatted_date
+        );
+
+        if (current.deposit_amount !== null) {
+          accumulator[objIndex].deposit_amount = (
+            +accumulator[objIndex].deposit_amount! + +current.deposit_amount
+          ).toString();
+        }
+
+        if (current.withdraw_amount !== null) {
+          accumulator[objIndex].withdraw_amount = (
+            +accumulator[objIndex].withdraw_amount! + +current.withdraw_amount
+          ).toString();
+        }
+      }
+      return accumulator;
+    },
+    []
+  );
+
+  const labelValues = reducedTransactionsUniquePerDay.map((transaction) => {
     return transaction.formatted_date;
   });
 
-  // const labelValues = transactions
-  //   .map((transaction) => transaction.formatted_date)
-  //   .filter((value, index, self) => self.indexOf(value) === index);
+  const withdrawValues = reducedTransactionsUniquePerDay.map((transaction) => {
+    return (
+      transaction.withdraw_amount &&
+      (+transaction.withdraw_amount * -1).toString()
+    );
+  });
 
-  const depositValues = transactions.map((transaction) => {
+  const depositValues = reducedTransactionsUniquePerDay.map((transaction) => {
     return transaction.deposit_amount;
   });
-
-  // const reducedTransactions = transactions.reduce((accumulator: ITransactions[], current) => {
-  //   if (
-  //     !accumulator.some(
-  //       (tran: ITransactions) => tran.formatted_date === current.formatted_date
-  //     )
-  //   ) {
-  //     accumulator.push(current);
-  //   } else {
-  //     const objIndex = accumulator.findIndex(
-  //       (obj) => obj.formatted_date == current.formatted_date
-  //     );
-
-  //     if (current.deposit_amount !== null) {
-  //       accumulator[objIndex].deposit_amount = (
-  //         +accumulator[objIndex].deposit_amount + +current.deposit_amount
-  //       ).toString();
-  //     }
-
-  //     if (current.withdraw_amount !== null) {
-  //       accumulator[objIndex].withdraw_amount = (
-  //         +accumulator[objIndex].withdraw_amount + +current.withdraw_amount
-  //       ).toString();
-  //     }
-  //   }
-  //   return accumulator;
-  // }, []);
-
-  const withdrawValues = transactions.map((transaction) => {
-    return +transaction.withdraw_amount * -1;
-  });
-
-  // TODO: users clientsTotalBalance
 
   // TODO: get individual cards transactions
   // getTransactions(cardId);
@@ -108,6 +109,8 @@ const AccountOverview: React.FC<Props> = React.memo(() => {
 
   return (
     <div className="account-overview">
+      {console.log("withdrawValues: ", withdrawValues)}
+      {console.log("depositValues: ", depositValues)}
       <div className="account-overview-header">
         <div className="account-overview-select">
           <h3>Overview of</h3>
@@ -154,11 +157,11 @@ const AccountOverview: React.FC<Props> = React.memo(() => {
           </label>
           <label>
             Income
-            <h2>${income()}</h2>
+            <h2>${getIncomeValue()}</h2>
           </label>
           <label>
             Outcome
-            <h2>${outcome()}</h2>
+            <h2>${getOutcomeValue()}</h2>
           </label>
         </div>
       </div>
@@ -197,16 +200,8 @@ const AccountOverview: React.FC<Props> = React.memo(() => {
           }
         }}
       />
-
-      {/* {transactions.map((transaction) => {
-        return (
-          <h3 key={transaction.transaction_id}>{transaction.deposit_amount}</h3>
-        );
-      })} */}
     </div>
   );
 });
 
 export default AccountOverview;
-
-// export const AccountOverviewMemoized = React.memo(AccountOverview)
