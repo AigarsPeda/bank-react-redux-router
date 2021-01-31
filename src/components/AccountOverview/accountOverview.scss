@@ -1,0 +1,84 @@
+@use "../../scss/variables"  as *;
+
+.account-overview {
+  margin-top: 85px;
+
+  .account-overview-header {
+    display: flex;
+    justify-content: space-between;
+    .account-overview-select {
+      display: flex;
+      align-items: center;
+
+      select {
+        font-size: 1.625rem;
+        font-weight: bold;
+        color: $primary-accent-color;
+        padding-left: 0.438rem; // 7px
+        border: none;
+        // appearance: none;
+        // -webkit-appearance: none;
+        // -moz-appearance: none;
+      }
+    }
+
+    .account-overview-days {
+      ul {
+        display: flex;
+
+        li {
+          margin-left: 3.125rem; // 50px
+          a {
+            text-decoration: none;
+            color: $main-text-color;
+          }
+        }
+      }
+    }
+  }
+
+  .account-overview-statistics {
+    margin-top: 1.563rem; // 25px
+
+    .account-overview-header {
+      display: flex;
+      justify-content: flex-start;
+
+      label {
+        margin-right: 5rem; // 80px
+      }
+    }
+  }
+
+  .account-overview-table {
+    margin-top: 3.75rem; // 60px
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      thead {
+        text-align: left;
+        color: $secondary-text-color;
+      }
+
+      tfoot {
+        tr {
+          td {
+            padding: 0.75rem;
+            vertical-align: bottom;
+            border-bottom: 0.125rem solid $border-color; // 2px
+            font-weight: 600;
+          }
+
+          .withdraw {
+            color: $third-accent-color;
+          }
+
+          .deposit {
+            color: $secondary-accent-color;
+          }
+        }
+      }
+    }
+  }
+}
