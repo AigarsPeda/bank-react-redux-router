@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getCards } from "../../redux/actions/cards";
 import {
-  //getAllTransactions,
+  getAllTransactions,
   getTransactions
 } from "../../redux/actions/transactions";
 import { getUser } from "../../redux/actions/user";
@@ -29,39 +30,29 @@ const AccountOverview: React.FC = React.memo(() => {
 
   const [cardId, setCardsId] = useState("all_transactions");
 
+  const getWrightTransactions = useCallback(() => {
+    if (cardId === "all_transactions") {
+      console.log("te");
+      dispatch(getAllTransactions());
+    } else {
+      dispatch(getTransactions(cardId));
+    }
+  }, [cardId, dispatch]);
+
   useEffect(() => {
     dispatch(getCards());
     dispatch(getUser());
-    dispatch(getTransactions(cardId));
-  }, [cardId, dispatch]);
+    getWrightTransactions();
+  }, [cardId, dispatch, getWrightTransactions]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCardsId(e.target.value);
   };
 
   const handleOnBlur = () => {
-    setCardsId("all_transactions");
+    // setCardsId("all_transactions");
+    return;
   };
-
-  // const getIncomeValue = () => {
-  //   return transactions.reduce((a: number, b: ITransactions) => {
-  //     if (b.deposit_amount === null) {
-  //       return a;
-  //     } else {
-  //       return a + parseInt(b.deposit_amount);
-  //     }
-  //   }, 0);
-  // };
-
-  // const getOutcomeValue = () => {
-  //   return transactions.reduce((a: number, b: ITransactions) => {
-  //     if (b.withdraw_amount === null) {
-  //       return a;
-  //     } else {
-  //       return a + parseInt(b.withdraw_amount);
-  //     }
-  //   }, 0);
-  // };
 
   const reducedTransactionsUniquePerDay = transactions.reduce(
     (accumulator: ITransactions[], current) => {
@@ -105,48 +96,69 @@ const AccountOverview: React.FC = React.memo(() => {
           ];
         }
       }
-      console.log("accumulator: ", accumulator);
+      // console.log("accumulator: ", accumulator);
       return accumulator;
     },
     []
   );
 
-  // console.log(
-  //   "reducedTransactionsUniquePerDay: ",
-  //   reducedTransactionsUniquePerDay
-  // );
+  const getIncomeValue = () => {
+    return reducedTransactionsUniquePerDay.reduce(
+      (a: number, b: ITransactions) => {
+        if (b.deposit_amount === null) {
+          return a;
+        } else {
+          return a + parseInt(b.deposit_amount);
+        }
+      },
+      0
+    );
+  };
 
-  // const labelValues = reducedTransactionsUniquePerDay.map((transaction) => {
-  //   return transaction.formatted_date;
-  // });
+  const getWithdrawAmount = () => {
+    return reducedTransactionsUniquePerDay.reduce(
+      (a: number, b: ITransactions) => {
+        if (b.withdraw_amount === null) {
+          return a;
+        } else {
+          return a + parseInt(b.withdraw_amount);
+        }
+      },
+      0
+    );
+  };
 
-  // const withdrawValues = reducedTransactionsUniquePerDay.map((transaction) => {
-  //   return (
-  //     transaction.withdraw_amount &&
-  //     (+transaction.withdraw_amount * -1).toString()
-  //   );
-  // });
+  const labelValues = reducedTransactionsUniquePerDay.map((transaction) => {
+    return transaction.formatted_date;
+  });
 
-  // const depositValues = reducedTransactionsUniquePerDay.map((transaction) => {
-  //   return transaction.deposit_amount;
-  // });
+  const withdrawValues = reducedTransactionsUniquePerDay.map((transaction) => {
+    if (transaction.withdraw_amount) {
+      return (+transaction.withdraw_amount * -1).toString();
+    } else {
+      return "0";
+    }
+  });
 
-  // TODO: get individual cards transactions
+  const depositValues = reducedTransactionsUniquePerDay.map((transaction) => {
+    if (transaction.deposit_amount) {
+      return transaction.deposit_amount;
+    } else {
+      return "0";
+    }
+  });
+
+  // TODO: get all cards transactions
   // getTransactions(cardId);
   // http://localhost:8000/transactions/1?start_date=15-01-2021&end_date=15-01-2021
 
   return (
     <div className="account-overview">
-      {console.log("transactions: ", transactions)}
-      {console.log("isLoadingTransactions: ", isLoadingTransactions)}
-      {console.log(
-        "reducedTransactionsUniquePerDay: ",
-        reducedTransactionsUniquePerDay
-      )}
       <div className="account-overview-header">
         <div className="account-overview-select">
           <h3>Overview of</h3>
           {console.log("cardId: ", cardId)}
+          {console.log("transactions: ", transactions)}
           <select
             name="cardId"
             id="cardId"
@@ -191,16 +203,16 @@ const AccountOverview: React.FC = React.memo(() => {
           </label>
           <label>
             Income
-            <h2>${"getIncomeValue()"}</h2>
+            <h2>${getIncomeValue()}</h2>
           </label>
           <label>
             Outcome
-            <h2>${"getOutcomeValue()"}</h2>
+            <h2>${getWithdrawAmount()}</h2>
           </label>
         </div>
       </div>
 
-      {/* <Line
+      <Line
         data={{
           labels: labelValues,
           datasets: [
@@ -221,7 +233,7 @@ const AccountOverview: React.FC = React.memo(() => {
           ]
         }}
         width={100}
-        height={50}
+        height={35}
         options={{
           maintainAspectRatio: true,
           scales: {
@@ -234,27 +246,38 @@ const AccountOverview: React.FC = React.memo(() => {
             ]
           }
         }}
-      /> */}
+      />
       <div className="account-overview-table">
+        <h3>Transactions</h3>
         <table>
-          <tr>
-            <th>Heij</th>
-          </tr>
-
-          {transactions.map((transaction) => {
-            return (
-              <tr key={transaction.transaction_id}>
-                <td>{transaction.balance}</td>
-                <td>{transaction.card_id}</td>
-                <td>{transaction.deposit_amount}</td>
-                <td>{transaction.deposit_description}</td>
-                <td>{transaction.formatted_date}</td>
-                <td>{transaction.transaction_id}</td>
-                <td>{transaction.withdraw_amount}</td>
-                <td>{transaction.withdraw_description}</td>
-              </tr>
-            );
-          })}
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Date</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tfoot>
+            {transactions.map((transaction) => {
+              return (
+                <tr key={transaction.transaction_id}>
+                  {transaction.deposit_description && (
+                    <td>{transaction.deposit_description}</td>
+                  )}
+                  {transaction.withdraw_description && (
+                    <td>{transaction.withdraw_description}</td>
+                  )}
+                  <td>{transaction.formatted_date}</td>
+                  {transaction.withdraw_amount && (
+                    <td className="withdraw">{transaction.withdraw_amount}</td>
+                  )}
+                  {transaction.deposit_amount && (
+                    <td className="deposit">{transaction.deposit_amount}</td>
+                  )}
+                </tr>
+              );
+            })}
+          </tfoot>
         </table>
       </div>
     </div>
