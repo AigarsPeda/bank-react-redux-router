@@ -1,16 +1,16 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Redirect, RouteChildrenProps } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import AccountOverview from "../../components/AccountOverview/AccountOverview";
 import NavBar from "../../components/NavBat/NavBar";
-import { RootState } from "../../redux/reducers";
+import { RootStateType } from "../../redux/reducers";
 
-type Props = ReturnType<typeof mapStateToProps> &
-  typeof mapDispatchToProps &
-  RouteChildrenProps;
+type Props = {};
 
-const DashboardPage: React.FC<Props> = (props) => {
-  const { isAuthenticated } = props;
+const DashboardPage: React.FC<Props> = React.memo(() => {
+  const { isAuthenticated } = useSelector((state: RootStateType) => ({
+    isAuthenticated: state.auth.isAuthenticated
+  }));
 
   if (!isAuthenticated) {
     return <Redirect to="/login" />;
@@ -34,12 +34,6 @@ const DashboardPage: React.FC<Props> = (props) => {
       </main>
     </div>
   );
-};
-
-const mapStateToProps = (state: RootState) => ({
-  isAuthenticated: state.auth.isAuthenticated
 });
 
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);
+export default DashboardPage;
