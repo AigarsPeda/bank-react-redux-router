@@ -1,3 +1,6 @@
+@use '../../scss/mixins' as *;
+@use '../../scss/variables' as *;
+
 .login-page {
   display: flex;
   width: 100%;
