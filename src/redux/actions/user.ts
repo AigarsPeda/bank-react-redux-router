@@ -1,29 +1,31 @@
-// import { Action } from "redux";
-// import { ThunkAction } from "redux-thunk";
+import { ThunkAction } from "redux-thunk";
+import { callAPI } from "../../services/callAPI";
+import { RootStateType } from "../reducers";
+import { SET_USER_DATA, UserActionTypes } from "../types/user.types";
+import { IUser } from "./../../types";
 
-// import { RootState } from "../reducers";
-// import { AuthenticateActionTypes, AUTHENTICATE_USER } from "../types";
+type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootStateType,
+  unknown,
+  UserActionTypes
+>;
 
-// type AppThunk<ReturnType = any> = ThunkAction<
-//   ReturnType,
-//   RootState,
-//   AuthenticateActionTypes,
-//   Action<string>
-// >;
+// get all cards
+export const getUser = (): AppThunk => async (dispatch) => {
+  try {
+    // in callAPI if there are token in REDUX STORE
+    // it is added to AUTHORIZATION headers
+    const response: IUser = await callAPI({
+      url: "/user",
+      method: "GET"
+    });
 
-// // create new user
-// export const signUpUser = (userData: any): AppThunk => async (dispatch) => {
-//   try {
-//     console.log("Hei");
-//     // dispatch({
-//     //   type: AUTHENTICATE_USER,
-//     //   payload: token
-//     // });
-//     // dispatch({
-//     //   type: SET_USER_DATA,
-//     //   payload: user
-//     // });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+    dispatch({
+      type: SET_USER_DATA,
+      payload: response
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
