@@ -106,7 +106,34 @@ const AccountOverview: React.FC = React.memo(() => {
 
         const formatted_date = `${date}-${month}-${year}`;
 
+        console.log("current.formatted_date:", current.formatted_date);
+        console.log("formatted_date: ", formatted_date);
+
         if (current.formatted_date === formatted_date) {
+          accumulator.push(current);
+        }
+      }
+
+      if (period === "week") {
+        const today = new Date(); // get current date
+        const first = today.getDate() - today.getDay() + 1; // First day is the day of the month - the day of the week
+        const last = first + 6; // last day is the first day + 6
+
+        const firstDay = new Date(today.setDate(first)).toLocaleDateString();
+        const lastDay = new Date(today.setDate(last)).toLocaleDateString();
+
+        // new Date( "13-01-2011".replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3") );
+        const curr = current.formatted_date.split("-");
+        const formattedCurrentDate = new Date(
+          parseInt(curr[2]),
+          parseInt(curr[1]) - 1,
+          parseInt(curr[0])
+        ).toLocaleDateString();
+
+        if (
+          firstDay <= formattedCurrentDate &&
+          lastDay >= formattedCurrentDate
+        ) {
           accumulator.push(current);
         }
       }
@@ -169,6 +196,10 @@ const AccountOverview: React.FC = React.memo(() => {
 
   return (
     <div className="account-overview">
+      {console.log(
+        "reducedTransactionsUniquePerDay: ",
+        reducedTransactionsUniquePerDay
+      )}
       {isLoadingTransactions ? (
         <div>Data is loading...</div>
       ) : (
@@ -176,8 +207,8 @@ const AccountOverview: React.FC = React.memo(() => {
           <div className="account-overview-header">
             <div className="account-overview-select">
               <h3>Overview of</h3>
-              {console.log("cardId: ", cardId)}
-              {console.log("transactions: ", transactions)}
+              {/* {console.log("cardId: ", cardId)}
+              {console.log("transactions: ", transactions)} */}
               <select
                 name="cardId"
                 id="cardId"
@@ -206,7 +237,7 @@ const AccountOverview: React.FC = React.memo(() => {
                   <button onClick={() => setPeriod("day")}>Day</button>
                 </li>
                 <li>
-                  <button>Week</button>
+                  <button onClick={() => setPeriod("week")}>Week</button>
                 </li>
                 <li>
                   <button>Month</button>
