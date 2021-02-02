@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { getCards } from "../../redux/actions/cards";
 import {
   getAllTransactions,
@@ -29,6 +28,9 @@ const AccountOverview: React.FC = React.memo(() => {
   }));
 
   const [cardId, setCardsId] = useState("all_transactions");
+  const [period, setPeriod] = useState<"year" | "day" | "week" | "month">(
+    "year"
+  );
 
   const getWrightTransactions = useCallback(() => {
     if (cardId === "all_transactions") {
@@ -56,7 +58,7 @@ const AccountOverview: React.FC = React.memo(() => {
 
   const reducedTransactionsUniquePerDay = transactions.reduce(
     (accumulator: ITransactions[], current) => {
-      if (!isLoadingTransactions) {
+      if (period === "year") {
         if (
           !accumulator.some(
             (tran: ITransactions) =>
@@ -96,6 +98,19 @@ const AccountOverview: React.FC = React.memo(() => {
           ];
         }
       }
+      if (period === "day") {
+        const today = new Date();
+        const date = ("0" + today.getDate()).slice(-2);
+        const month = ("0" + (today.getMonth() + 1)).slice(-2);
+        const year = today.getFullYear();
+
+        const formatted_date = `${date}-${month}-${year}`;
+
+        if (current.formatted_date === formatted_date) {
+          accumulator.push(current);
+        }
+      }
+
       // console.log("accumulator: ", accumulator);
       return accumulator;
     },
@@ -154,132 +169,145 @@ const AccountOverview: React.FC = React.memo(() => {
 
   return (
     <div className="account-overview">
-      <div className="account-overview-header">
-        <div className="account-overview-select">
-          <h3>Overview of</h3>
-          {console.log("cardId: ", cardId)}
-          {console.log("transactions: ", transactions)}
-          <select
-            name="cardId"
-            id="cardId"
-            onChange={handleSelectChange}
-            onBlur={handleOnBlur}
-            value={cardId}
-          >
-            <option value="all_transactions" defaultValue="all_transactions">
-              all cards
-            </option>
-            {cards.map((card) => {
-              return (
-                <option value={card.card_id} key={card.card_id}>
-                  {card.card_no}
+      {isLoadingTransactions ? (
+        <div>Data is loading...</div>
+      ) : (
+        <>
+          <div className="account-overview-header">
+            <div className="account-overview-select">
+              <h3>Overview of</h3>
+              {console.log("cardId: ", cardId)}
+              {console.log("transactions: ", transactions)}
+              <select
+                name="cardId"
+                id="cardId"
+                onChange={handleSelectChange}
+                onBlur={handleOnBlur}
+                value={cardId}
+              >
+                <option
+                  value="all_transactions"
+                  defaultValue="all_transactions"
+                >
+                  all cards
                 </option>
-              );
-            })}
-          </select>
-        </div>
-        <div className="account-overview-days">
-          <ul>
-            <li>
-              <Link to="">Day</Link>
-            </li>
-            <li>
-              <Link to="">Week</Link>
-            </li>
-            <li>
-              <Link to="">Month</Link>
-            </li>
-            <li>
-              <Link to="">Year</Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="account-overview-statistics">
-        <div className="account-overview-header">
-          <label>
-            Current balance
-            <h2>${clientsTotalBalance}</h2>
-          </label>
-          <label>
-            Income
-            <h2>${getIncomeValue()}</h2>
-          </label>
-          <label>
-            Outcome
-            <h2>${getWithdrawAmount()}</h2>
-          </label>
-        </div>
-      </div>
+                {cards.map((card) => {
+                  return (
+                    <option value={card.card_id} key={card.card_id}>
+                      {card.card_no}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className="account-overview-days">
+              <ul>
+                <li>
+                  <button onClick={() => setPeriod("day")}>Day</button>
+                </li>
+                <li>
+                  <button>Week</button>
+                </li>
+                <li>
+                  <button>Month</button>
+                </li>
+                <li>
+                  <button onClick={() => setPeriod("year")}>Year</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="account-overview-statistics">
+            <div className="account-overview-header">
+              <label>
+                Current balance
+                <h2>${clientsTotalBalance}</h2>
+              </label>
+              <label>
+                Income
+                <h2>${getIncomeValue()}</h2>
+              </label>
+              <label>
+                Outcome
+                <h2>${getWithdrawAmount()}</h2>
+              </label>
+            </div>
+          </div>
 
-      <Line
-        data={{
-          labels: labelValues,
-          datasets: [
-            {
-              label: "# of deposit",
-              data: depositValues,
-              backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-              borderColor: ["rgba(255, 99, 132, 1)"],
-              borderWidth: 1
-            },
-            {
-              label: "# of withdraw",
-              data: withdrawValues,
-              backgroundColor: ["rgba(54, 162, 235, 0.2)"],
-              borderColor: ["rgba(54, 162, 235, 1)"],
-              borderWidth: 1
-            }
-          ]
-        }}
-        width={100}
-        height={35}
-        options={{
-          maintainAspectRatio: true,
-          scales: {
-            yAxis: [
-              {
-                ticks: {
-                  beginAtZero: true
+          <Line
+            data={{
+              labels: labelValues,
+              datasets: [
+                {
+                  label: "# of deposit",
+                  data: depositValues,
+                  backgroundColor: ["rgba(255, 99, 132, 0.2)"],
+                  borderColor: ["rgba(255, 99, 132, 1)"],
+                  borderWidth: 1
+                },
+                {
+                  label: "# of withdraw",
+                  data: withdrawValues,
+                  backgroundColor: ["rgba(54, 162, 235, 0.2)"],
+                  borderColor: ["rgba(54, 162, 235, 1)"],
+                  borderWidth: 1
                 }
+              ]
+            }}
+            width={100}
+            height={35}
+            options={{
+              maintainAspectRatio: true,
+              scales: {
+                yAxis: [
+                  {
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }
+                ]
               }
-            ]
-          }
-        }}
-      />
-      <div className="account-overview-table">
-        <h3>Transactions</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Date</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tfoot>
-            {transactions.map((transaction) => {
-              return (
-                <tr key={transaction.transaction_id}>
-                  {transaction.deposit_description && (
-                    <td>{transaction.deposit_description}</td>
-                  )}
-                  {transaction.withdraw_description && (
-                    <td>{transaction.withdraw_description}</td>
-                  )}
-                  <td>{transaction.formatted_date}</td>
-                  {transaction.withdraw_amount && (
-                    <td className="withdraw">{transaction.withdraw_amount}</td>
-                  )}
-                  {transaction.deposit_amount && (
-                    <td className="deposit">{transaction.deposit_amount}</td>
-                  )}
+            }}
+          />
+          <div className="account-overview-table">
+            <h3>Transactions</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Date</th>
+                  <th>Amount</th>
                 </tr>
-              );
-            })}
-          </tfoot>
-        </table>
-      </div>
+              </thead>
+              <tfoot>
+                {transactions.reverse().map((transaction) => {
+                  return (
+                    <tr key={transaction.transaction_id}>
+                      {transaction.deposit_description && (
+                        <td>{transaction.deposit_description}</td>
+                      )}
+                      {transaction.withdraw_description && (
+                        <td>{transaction.withdraw_description}</td>
+                      )}
+                      <td>{transaction.formatted_date}</td>
+                      {transaction.withdraw_amount && (
+                        <td className="withdraw">
+                          {transaction.withdraw_amount}
+                        </td>
+                      )}
+                      {transaction.deposit_amount && (
+                        <td className="deposit">
+                          {transaction.deposit_amount}
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })}
+              </tfoot>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 });
