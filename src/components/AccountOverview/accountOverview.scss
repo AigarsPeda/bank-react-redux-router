@@ -29,9 +29,10 @@
 
         li {
           margin-left: 3.125rem; // 50px
-          a {
+          button {
             text-decoration: none;
-            color: $main-text-color;
+            border: none;
+            background: transparent;
           }
         }
       }
