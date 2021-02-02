@@ -3,7 +3,7 @@ import {
   AuthenticateActionTypes,
   AUTHENTICATE_USER,
   UNAUTHENTICATED_USER
-} from "../types";
+} from "../types/auth.types";
 
 export interface IAuthState {
   isAuthenticated: boolean;
@@ -22,7 +22,6 @@ export default (
 ): IAuthState => {
   switch (action.type) {
     case AUTHENTICATE_USER:
-      console.log("AUTH TOKEN: ", initialState);
       return {
         ...state,
         isAuthenticated: isToken(action.payload),
