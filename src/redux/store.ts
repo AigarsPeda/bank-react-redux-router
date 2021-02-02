@@ -1,12 +1,13 @@
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import thunk from "redux-thunk";
+import thunk, { ThunkMiddleware } from "redux-thunk";
 import { persistStore } from "redux-persist";
 
-import rootReducers from "./reducers/index";
+import rootReducers, { RootStateType } from "./reducers/index";
+import { AppActionsTypes } from "./types";
 
 const initialState = {};
-const middleware = [thunk];
+const middleware = [thunk as ThunkMiddleware<RootStateType, AppActionsTypes>];
 
 const store = createStore(
   rootReducers,
@@ -14,7 +15,6 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(...middleware))
 );
 
-// store type ???
-export const persistor = persistStore(store as any);
+export const persistor = persistStore(store);
 
 export default store;
