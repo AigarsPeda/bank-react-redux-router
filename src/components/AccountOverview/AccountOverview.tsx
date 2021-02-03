@@ -106,9 +106,6 @@ const AccountOverview: React.FC = React.memo(() => {
 
         const formatted_date = `${date}-${month}-${year}`;
 
-        console.log("current.formatted_date:", current.formatted_date);
-        console.log("formatted_date: ", formatted_date);
-
         if (current.formatted_date === formatted_date) {
           accumulator.push(current);
         }
@@ -138,7 +135,20 @@ const AccountOverview: React.FC = React.memo(() => {
         }
       }
 
-      // console.log("accumulator: ", accumulator);
+      if (period === "month") {
+        const monthNow = new Date().getMonth();
+        const curr = current.formatted_date.split("-");
+        const formattedCurrentDate = new Date(
+          parseInt(curr[2]),
+          parseInt(curr[1]) - 1,
+          parseInt(curr[0])
+        );
+
+        if (formattedCurrentDate.getMonth() === monthNow) {
+          accumulator.push(current);
+        }
+      }
+
       return accumulator;
     },
     []
@@ -240,7 +250,7 @@ const AccountOverview: React.FC = React.memo(() => {
                   <button onClick={() => setPeriod("week")}>Week</button>
                 </li>
                 <li>
-                  <button>Month</button>
+                  <button onClick={() => setPeriod("month")}>Month</button>
                 </li>
                 <li>
                   <button onClick={() => setPeriod("year")}>Year</button>
