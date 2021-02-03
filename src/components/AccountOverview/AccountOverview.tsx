@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
+import { Line, defaults } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
 import { getCards } from "../../redux/actions/cards";
 import {
@@ -10,8 +10,7 @@ import { getUser } from "../../redux/actions/user";
 import { RootStateType } from "../../redux/reducers";
 import { ITransactions } from "../../types";
 
-// import { Line } from "react-chartjs-2";
-// import { ITransactions } from "../../types";
+// defaults.global.elements.line.tension = 0;
 
 const AccountOverview: React.FC = React.memo(() => {
   const dispatch = useDispatch();
@@ -300,10 +299,18 @@ const AccountOverview: React.FC = React.memo(() => {
             options={{
               maintainAspectRatio: true,
               scales: {
-                yAxis: [
+                yAxes: [
                   {
                     ticks: {
+                      fontSize: 16,
                       beginAtZero: true
+                    }
+                  }
+                ],
+                xAxes: [
+                  {
+                    ticks: {
+                      fontSize: 16
                     }
                   }
                 ]
