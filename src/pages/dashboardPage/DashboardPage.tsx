@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+
 import AccountOverview from "../../components/AccountOverview/AccountOverview";
-import NavBar from "../../components/NavBat/NavBar";
+import ClientActions from "../../components/ClientActions/ClientActions";
+import NavBar from "../../components/NavBar/NavBar";
 import { RootStateType } from "../../redux/reducers";
 
-type Props = {};
-
-const DashboardPage: React.FC<Props> = React.memo(() => {
+const DashboardPage: React.FC = React.memo(() => {
   const { isAuthenticated } = useSelector((state: RootStateType) => ({
     isAuthenticated: state.auth.isAuthenticated
   }));
@@ -25,7 +25,7 @@ const DashboardPage: React.FC<Props> = React.memo(() => {
   return (
     <div className="dashboard-page">
       <div className="dashboard-actions">
-        <h3>Search</h3>
+        <ClientActions />
       </div>
 
       <main className="dashboard-main">
