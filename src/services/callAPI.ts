@@ -5,7 +5,7 @@ const BASE_URL = "http://localhost:8000";
 interface IOptions {
   method: string;
   headers: {
-    Accept: string;
+    // Accept: string;
     "Content-Type": string;
     Authorization: string;
   };
@@ -27,7 +27,7 @@ export const callAPI = async ({ url, method, data }: IArgs) => {
   const options: IOptions = {
     method: method,
     headers: {
-      Accept: "application/json",
+      // Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
     }
@@ -43,5 +43,6 @@ export const callAPI = async ({ url, method, data }: IArgs) => {
   const rawResponse = await fetch(`${BASE_URL}${url}`, options);
 
   const response = await rawResponse.json();
+
   return response;
 };
