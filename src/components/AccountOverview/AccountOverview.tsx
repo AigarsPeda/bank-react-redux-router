@@ -12,7 +12,7 @@ import { ITransactions } from "../../types";
 
 // defaults.global.elements.line.tension = 0;
 
-const AccountOverview: React.FC = React.memo(() => {
+const AccountOverview: React.FC = () => {
   const dispatch = useDispatch();
   const {
     cards,
@@ -205,10 +205,10 @@ const AccountOverview: React.FC = React.memo(() => {
 
   return (
     <div className="account-overview">
-      {console.log(
+      {/* {console.log(
         "reducedTransactionsUniquePerDay: ",
         reducedTransactionsUniquePerDay
-      )}
+      )} */}
       {isLoadingTransactions ? (
         <div>Data is loading...</div>
       ) : (
@@ -358,6 +358,6 @@ const AccountOverview: React.FC = React.memo(() => {
       )}
     </div>
   );
-});
+};
 
 export default AccountOverview;
