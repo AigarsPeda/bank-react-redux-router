@@ -23,7 +23,13 @@
     "react-hooks/exhaustive-deps": "warn",
     "react/prop-types": "off",
     "react/display-name": "off",
-    "functional/immutable-data": "error"
+    "functional/immutable-data": "error",
+    "import/no-anonymous-default-export": [
+      2,
+      {
+        "allowArrowFunction": true
+      }
+    ]
   },
   "settings": {
     "react": {
