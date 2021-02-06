@@ -33,7 +33,7 @@ const AccountOverview: React.FC = () => {
 
   const getWrightTransactions = useCallback(() => {
     if (cardId === "all_transactions") {
-      console.log("te");
+      // console.log("te");
       dispatch(getAllTransactions());
     } else {
       dispatch(getTransactions(cardId));
