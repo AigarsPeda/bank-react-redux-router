@@ -2,16 +2,16 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer, { IAuthState } from "./authReducer";
-import cardsReducer, { ICardsInitialState } from "./cardsReducer";
-import errorReducer, { IErrorInitialState } from "./errorReducer";
+import cardsReducer, { ICardsState } from "./cardsReducer";
+import errorReducer, { IErrorState } from "./errorReducer";
 import transactionsReducer, { ITransactionsState } from "./transactionsReducer";
 import userReducer, { IUserState } from "./userReducer";
 
 interface IDefaultState {
   user: IUserState;
   auth: IAuthState;
-  error: IErrorInitialState;
-  cards: ICardsInitialState;
+  error: IErrorState;
+  cards: ICardsState;
   transactions: ITransactionsState;
 }
 
