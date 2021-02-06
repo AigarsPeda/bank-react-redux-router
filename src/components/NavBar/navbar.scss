@@ -1,0 +1,39 @@
+@use "../../scss/variables"  as *;
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .nav-bar-link {
+    ul {
+      display: flex;
+
+      li {
+        a {
+          font-weight: 600;
+          margin-right: 3.438rem; // 55px
+          text-decoration: none;
+          color: $main-text-color;
+        }
+      }
+    }
+  }
+
+  .nav-bar-profile {
+    display: flex;
+    align-items: center;
+
+    svg {
+      width: 2rem; // 32px
+      height: 2rem; // 32px
+      fill: $danger-color;
+      margin-left: 1rem; // 16px
+      cursor: pointer;
+    }
+
+    h3 {
+      text-transform: capitalize;
+    }
+  }
+}
