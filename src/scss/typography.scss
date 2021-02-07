@@ -1,0 +1,28 @@
+@use "./variables"  as *;
+
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  color: $main-text-color;
+  font-family: "Open Sans", sans-serif;
+}
+
+h3 {
+  font-weight: bold;
+  font-size: 1.625rem;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+a {
+  font-weight: 600;
+}
+
+button {
+  font-weight: 600;
+  font-size: 1rem;
+  color: $main-text-color;
+}
