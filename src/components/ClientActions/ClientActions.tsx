@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import SearchIcon from "../../images/svg/SearchIcon";
 import { RootStateType } from "../../redux/reducers";
+import Carousel from "../Carousel/Carousel";
 
 const ClientActions: React.FC = () => {
   const [search, setSearch] = useState("");
@@ -35,7 +36,7 @@ const ClientActions: React.FC = () => {
         onChange={handleChange}
         value={search}
       />
-
+      <Carousel>{cardsNo}</Carousel>
       {/* {filteredCards.map((card) => {
         return (
           <div key={card.card_id}>
