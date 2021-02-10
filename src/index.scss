@@ -1,0 +1,19 @@
+// base
+@use './scss/base';
+@use './scss/fonts';
+@use './scss/reset';
+@use './scss/typography.scss';
+
+// components
+@use './components/NavBar/navBar';
+@use './components/ClientActions/clientActions';
+@use './components/AccountOverview/accountOverview';
+
+// carousel
+@use './components/Carousel/carousel';
+
+// pages
+@use "./pages/NoMatch/noMatchPage";
+@use "./pages/loginPage/loginPage";
+@use "./pages/signUpPage/signUpPage";
+@use "./pages/dashboardPage/dashboardPage";
