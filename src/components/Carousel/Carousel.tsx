@@ -139,7 +139,7 @@ const Carousel: React.FC<Props> = (props) => {
     });
   };
 
-  // TODO: add touch support
+  // TODO: Add touch support
   // const [touchStart, setTouchStart] = useState(0);
   // const [touchEnd, setTouchEnd] = useState(0);
 
