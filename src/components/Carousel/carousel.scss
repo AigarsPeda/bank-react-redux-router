@@ -1,0 +1,51 @@
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+
+  ul {
+    list-style-type: none;
+  }
+
+  .carousel-item {
+    margin: 0 auto;
+    overflow: auto;
+    // width: 100%;
+    // border: solid;
+    // height: 200px;
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform ease-in 0.1s;
+    top: 40%;
+    outline: none;
+    cursor: pointer;
+
+    svg {
+      height: 25px;
+      width: 25px;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &.left {
+      // left: 25px;
+      left: 0;
+      svg {
+        fill: red;
+      }
+    }
+
+    &.right {
+      // right: 25px;
+      right: 0;
+    }
+  }
+}
