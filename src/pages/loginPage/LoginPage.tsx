@@ -41,7 +41,7 @@ const LoginPage: React.FC = () => {
         <h3>Log In</h3>
         <p>Enter your credentials to proceed</p>
         <form onSubmit={handleSubmit}>
-          <label>Email Address</label>
+          <label htmlFor="email">Email Address</label>
           <input
             type="email"
             value={user.email}
@@ -49,7 +49,7 @@ const LoginPage: React.FC = () => {
             name="email"
             autoComplete="on"
           />
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             value={user.password}
@@ -60,12 +60,12 @@ const LoginPage: React.FC = () => {
           <span className="login-page-error">{error && `* ${error}`}</span>
 
           <button type="submit">Login</button>
-          <Link to="/signup">Don't have a account?</Link>
+          <Link to="/signup">Don&apos;t have a account?</Link>
         </form>
       </div>
 
       <div className="login-image-container">
-        <img src={sightWheel} />
+        <img src={sightWheel} alt="black and white house" />
       </div>
     </div>
   );
