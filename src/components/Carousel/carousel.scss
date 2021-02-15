@@ -1,3 +1,5 @@
+@use "../../scss/variables"  as *;
+
 .carousel-container {
   position: relative;
   overflow: hidden;
@@ -9,9 +11,6 @@
   .carousel-item {
     margin: 0 auto;
     overflow: auto;
-    // width: 100%;
-    // border: solid;
-    // height: 200px;
   }
 
   button {
@@ -22,13 +21,14 @@
     justify-content: center;
     align-items: center;
     transition: transform ease-in 0.1s;
-    top: 40%;
+    top: 45%;
     outline: none;
     cursor: pointer;
 
     svg {
-      height: 25px;
-      width: 25px;
+      height: 1.563rem; // 25px
+      width: 1.563rem; // 25px
+      fill: $main-text-color;
     }
 
     &:hover {
@@ -36,15 +36,10 @@
     }
 
     &.left {
-      // left: 25px;
       left: 0;
-      svg {
-        fill: red;
-      }
     }
 
     &.right {
-      // right: 25px;
       right: 0;
     }
   }
