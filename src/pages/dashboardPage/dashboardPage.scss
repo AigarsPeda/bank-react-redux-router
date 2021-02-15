@@ -1,5 +1,5 @@
-@use '../../scss/mixins' as *;
-@use '../../scss/variables' as *;
+// @use '../../scss/mixins' as *;
+// @use '../../scss/variables' as *;
 
 .dashboard-page {
   display: grid;
@@ -9,6 +9,7 @@
   .dashboard-actions {
     padding: 3.125rem; // 50px
     background-color: #ebf2fa;
+    height: 100vh;
   }
 
   .dashboard-main {
