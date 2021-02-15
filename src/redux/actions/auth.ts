@@ -75,7 +75,7 @@ export const logInUser = (loginData: IUserLogIn): AppThunk => async (
     });
 
     const { token, user, error }: IUserAuth = response;
-
+    console.log("user: ", user);
     dispatch({
       type: AUTHENTICATE_USER,
       payload: token
