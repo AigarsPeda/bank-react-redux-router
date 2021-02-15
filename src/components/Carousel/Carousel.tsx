@@ -38,7 +38,6 @@ const Carousel: React.FC<Props> = (props) => {
   const { translate, transition, activeIndex, _slides } = state;
 
   useEffect(() => {
-    console.log("children: ", children);
     setState((state) => ({
       ...state,
       translate: getWidth()
