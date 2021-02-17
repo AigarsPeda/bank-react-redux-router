@@ -13,6 +13,7 @@ import {
   CLEAR_ERROR,
   SetErrorActionTypes
 } from "../types/error.types";
+import { CLEAR_LOANS_DATA, SetLoansActionTypes } from "../types/loans.types";
 import {
   CLEAR_TRANSACTION,
   SetTransactionsActionTypes
@@ -32,6 +33,7 @@ type AppThunk<ReturnType = void> = ThunkAction<
   | UserActionTypes
   | CardsActionTypes
   | SetTransactionsActionTypes
+  | SetLoansActionTypes
 >;
 
 // create new user
@@ -109,6 +111,9 @@ export const logOutUser = (): AppThunk => async (dispatch) => {
     });
     dispatch({
       type: CLEAR_USER_DATA
+    });
+    dispatch({
+      type: CLEAR_LOANS_DATA
     });
   } catch (error) {
     console.log(error);
