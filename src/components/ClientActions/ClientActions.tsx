@@ -1,20 +1,29 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { creditCardType } from "../../helpers/creditCardType";
 import CreditCardChipIcon from "../../images/svg/CreditCardChipIcon";
 import SearchIcon from "../../images/svg/SearchIcon";
+import { getLenderCards } from "../../redux/actions/loans";
 import { RootStateType } from "../../redux/reducers";
 import Carousel from "../Carousel/Carousel";
 
 const ClientActions: React.FC = () => {
   const [search, setSearch] = useState("");
-  const { cards } = useSelector((state: RootStateType) => ({
-    cards: state.cards.cards
+  const dispatch = useDispatch();
+  const { cards, loanerCards } = useSelector((state: RootStateType) => ({
+    cards: state.cards.cards,
+    loanerCards: state.loans.lonerCards
   }));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setSearch(value);
   };
+
+  useEffect(() => {
+    dispatch(getLenderCards());
+  }, [dispatch]);
 
   // const cardsNoWithDiv = cards
   //   .filter((card) => {
@@ -32,46 +41,6 @@ const ClientActions: React.FC = () => {
   //       </div>
   //     );
   //   });
-
-  const creditCardType = (cc: string) => {
-    const amex = new RegExp("^3[47][0-9]{13}$");
-    const visa = new RegExp("^4[0-9]{12}(?:[0-9]{3})?$");
-    const cup1 = new RegExp("^62[0-9]{14}[0-9]*$");
-    const cup2 = new RegExp("^81[0-9]{14}[0-9]*$");
-
-    const mastercard = new RegExp("^5[1-5][0-9]{14}$");
-    const mastercard2 = new RegExp("^2[2-7][0-9]{14}$");
-
-    const disco1 = new RegExp("^6011[0-9]{12}[0-9]*$");
-    const disco2 = new RegExp("^62[24568][0-9]{13}[0-9]*$");
-    const disco3 = new RegExp("^6[45][0-9]{14}[0-9]*$");
-
-    const diners = new RegExp("^3[0689][0-9]{12}[0-9]*$");
-    const jcb = new RegExp("^35[0-9]{14}[0-9]*$");
-
-    if (visa.test(cc)) {
-      return "VISA";
-    }
-    if (amex.test(cc)) {
-      return "AMEX";
-    }
-    if (mastercard.test(cc) || mastercard2.test(cc)) {
-      return "MASTERCARD";
-    }
-    if (disco1.test(cc) || disco2.test(cc) || disco3.test(cc)) {
-      return "DISCOVER";
-    }
-    if (diners.test(cc)) {
-      return "DINERS";
-    }
-    if (jcb.test(cc)) {
-      return "JCB";
-    }
-    if (cup1.test(cc) || cup2.test(cc)) {
-      return "CHINA_UNION_PAY";
-    }
-    return undefined;
-  };
 
   const cardsNoWithDiv = cards.map((card) => {
     const slide = React.createRef<HTMLDivElement>();
@@ -132,6 +101,21 @@ const ClientActions: React.FC = () => {
     );
   });
 
+  const loanerCardsWithDiv = loanerCards.map((card) => {
+    return (
+      <div key={card.card_id} className="loaner-card">
+        <div className="loaner-card-bank">
+          <div>{card.bank_name}</div>
+          <div>{creditCardType(card.card_no)}</div>
+        </div>
+        <div className="loaner-card-number">
+          <CreditCardChipIcon /> {card.card_no}
+        </div>
+        <div className="loaner-card-balance">Balance: {card.total_balance}</div>
+      </div>
+    );
+  });
+
   // const filteredCards = cardsNoWithDiv.filter((card) =>
   //   card.props.children.toLowerCase().includes(search.toLowerCase())
   // );
@@ -155,8 +139,20 @@ const ClientActions: React.FC = () => {
         value={search}
       />
       <h3>Your cards</h3>
-      <div style={{ width: "350px", height: "200px" }}>
+      <div style={{ width: "350px", height: "200px", marginBottom: "50px" }}>
         <Carousel>{cardsNoWithDiv}</Carousel>
+      </div>
+      <h3>Loan money</h3>
+      <div className="client-actions-loan">
+        <div style={{ width: "350px", height: "200px", marginBottom: "50px" }}>
+          <Carousel>{loanerCardsWithDiv}</Carousel>
+        </div>
+      </div>
+
+      <div className="client-actions-deposit">
+        <Link to="/deposit" className="client-actions-deposit-deposit-link">
+          Make deposit
+        </Link>
       </div>
     </div>
   );
