@@ -32,8 +32,11 @@
       cursor: pointer;
     }
 
-    h3 {
+    a {
       text-transform: capitalize;
+      text-decoration: none;
+      color: $main-text-color;
+      // font-size: 28px;
     }
   }
 }
