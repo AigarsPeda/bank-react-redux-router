@@ -2,21 +2,25 @@
 
 .client-actions {
   svg {
-    width: 24px;
-    height: 24px;
+    width: 1.5rem; // 24px
+    height: 1.5rem; // 24px
   }
 
   .client-actions-deposit {
-    button {
+    .client-actions-deposit-deposit-link {
       width: 100%;
-      height: 70px;
-      border-radius: 11px;
+      height: 4.375rem; // 70px
+      border-radius: 0.688rem; // 11px
       border: none;
       background-color: $primary-btn-color;
       color: $light-text-color;
-      font-size: 18px;
-      letter-spacing: 0.8px;
-      margin-top: 100px;
+      font-size: 18px; // 18px
+      letter-spacing: 0.8px; // 0.8px
+      margin-top: 100px; // 100px
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 
@@ -28,8 +32,8 @@
 
     .client-actions-loan-cards {
       display: inline-block;
-      width: 150px;
-      height: 150px;
+      width: 9.375rem; // 150px
+      height: 9.375rem; // 150px
       background-color: red;
       border: 1px solid black;
     }
@@ -37,15 +41,40 @@
 }
 
 .loaner-card {
-  width: 300px;
-  height: 200px;
-  background-color: $primary-accent-color;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 18.75rem; // 300px
+  height: 12.5rem; // 200px
+  background-color: $secondary-accent-color;
   color: $light-text-color;
   margin: 0.625rem; // 10px
   padding: 1.563rem; // 25px
   font-weight: 600;
   font-size: 18px;
   border-radius: 0.688rem; // 11px
+
+  .loaner-card-bank {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .loaner-card-number {
+    display: flex;
+    justify-content: space-between;
+
+    svg {
+      fill: $light-text-color;
+      width: 2.5rem; // 40px
+      height: 2.5rem; // 40px
+    }
+  }
+
+  .loaner-card-balance {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
 }
 
 .credit-card {
@@ -54,15 +83,14 @@
   grid-template-rows: 1fr 1fr 1fr;
 
   border-radius: 0.688rem; // 11px
-
-  width: 300px;
-  height: 200px;
+  width: 18.75rem; // 300px
+  height: 12.5rem; // 200px
   background-color: $primary-accent-color;
   color: $light-text-color;
   margin: 0.625rem; // 10px
   padding: 1.563rem; // 25px
   font-weight: 600;
-  font-size: 18px;
+  font-size: 1.125rem; // 18px
 
   // css variables
   // are set in tsx ClientActions file
