@@ -25,12 +25,12 @@ const NavBar: React.FC = () => {
             <Link to="/services">Services</Link>
           </li>
           <li>
-            <Link to="/currency">Currency</Link>
+            <Link to="/profile">Profile</Link>
           </li>
         </ul>
       </div>
       <div className="nav-bar-profile">
-        <h3>{user.name}</h3>
+        <Link to="/profile">{user.name}</Link>
         <ExitIcon onClick={() => dispatch(logOutUser())} />
       </div>
     </nav>
