@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import authReducer, { IAuthState } from "./authReducer";
 import cardsReducer, { ICardsState } from "./cardsReducer";
 import errorReducer, { IErrorState } from "./errorReducer";
+import loansReducer, { ILoansState } from "./loansReducer";
 import transactionsReducer, { ITransactionsState } from "./transactionsReducer";
 import userReducer, { IUserState } from "./userReducer";
 
@@ -13,6 +14,7 @@ interface IDefaultState {
   error: IErrorState;
   cards: ICardsState;
   transactions: ITransactionsState;
+  loans: ILoansState;
 }
 
 const persistConfig = {
@@ -29,7 +31,8 @@ const appReducers = combineReducers({
   user: userReducer,
   error: errorReducer,
   cards: cardsReducer,
-  transactions: transactionsReducer
+  transactions: transactionsReducer,
+  loans: loansReducer
 });
 
 const rootReducers = (state: IDefaultState | undefined, action: any) => {
