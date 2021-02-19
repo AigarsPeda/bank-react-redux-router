@@ -139,7 +139,13 @@
 
   .credit-card-balance {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: flex-end;
+
+    a {
+      color: $secondary-accent-color;
+      text-decoration: none;
+      font-weight: 700;
+    }
   }
 }
