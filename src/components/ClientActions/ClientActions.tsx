@@ -83,7 +83,7 @@ const ClientActions: React.FC = () => {
         aria-hidden="true"
         className="credit-card"
         key={card.card_id}
-        onClick={() => console.log(card.card_id)}
+        // onClick={() => console.log(card.card_id)}
         ref={slide}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -96,7 +96,10 @@ const ClientActions: React.FC = () => {
           <CreditCardChipIcon />
           {formatNumber(card.card_no)}
         </div>
-        <div className="credit-card-balance">Balance: {card.total_balance}</div>
+        <div className="credit-card-balance">
+          <Link to={`/deposit/${card.card_id}`}>Make Deposit</Link>
+          Balance: {card.total_balance}
+        </div>
       </div>
     );
   });
@@ -149,11 +152,11 @@ const ClientActions: React.FC = () => {
         </div>
       </div>
 
-      <div className="client-actions-deposit">
+      {/* <div className="client-actions-deposit">
         <Link to="/deposit" className="client-actions-deposit-deposit-link">
           Make deposit
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };
