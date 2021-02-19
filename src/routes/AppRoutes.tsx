@@ -17,7 +17,7 @@ const AppRoutes: React.FC = () => {
       <Route exact path="/login" component={LoginPage} />
       <AuthRoute exact path="/" component={DashboardPage} />
       <AuthRoute exact path="/profile" component={ProfilePage} />
-      <AuthRoute exact path="/deposit" component={DepositPage} />
+      <AuthRoute exact path="/deposit/:id" component={DepositPage} />
 
       <Route component={NoMatchPage} />
     </Switch>
