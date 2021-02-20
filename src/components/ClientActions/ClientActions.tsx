@@ -43,9 +43,9 @@ const ClientActions: React.FC = () => {
   //   });
 
   const cardsNoWithDiv = cards.map((card) => {
-    const slide = React.createRef<HTMLDivElement>();
+    const slide = React.createRef<HTMLAnchorElement>();
     const handleMouseMove = (
-      event: React.MouseEvent<HTMLDivElement, MouseEvent>
+      event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
     ) => {
       const el = slide.current;
       if (el === null) return;
@@ -79,11 +79,11 @@ const ClientActions: React.FC = () => {
       slide.current?.style.setProperty("--y", "0");
     };
     return (
-      <div
+      <Link
+        to={`/deposit/${card.card_id}`}
         aria-hidden="true"
         className="credit-card"
         key={card.card_id}
-        // onClick={() => console.log(card.card_id)}
         ref={slide}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -96,11 +96,8 @@ const ClientActions: React.FC = () => {
           <CreditCardChipIcon />
           {formatNumber(card.card_no)}
         </div>
-        <div className="credit-card-balance">
-          <Link to={`/deposit/${card.card_id}`}>Make Deposit</Link>
-          Balance: {card.total_balance}
-        </div>
-      </div>
+        <div className="credit-card-balance">Balance: {card.total_balance}</div>
+      </Link>
     );
   });
 
@@ -141,11 +138,11 @@ const ClientActions: React.FC = () => {
         onChange={handleChange}
         value={search}
       />
-      <h3>Your cards</h3>
+      <h3>Your cards:</h3>
       <div style={{ width: "350px", height: "200px", marginBottom: "50px" }}>
         <Carousel>{cardsNoWithDiv}</Carousel>
       </div>
-      <h3>Loan money</h3>
+      <h3>Loan money:</h3>
       <div className="client-actions-loan">
         <div style={{ width: "350px", height: "200px", marginBottom: "50px" }}>
           <Carousel>{loanerCardsWithDiv}</Carousel>
