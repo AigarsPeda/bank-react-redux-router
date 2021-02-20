@@ -78,6 +78,7 @@
 }
 
 .credit-card {
+  text-decoration: none;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 1fr;
@@ -139,7 +140,7 @@
 
   .credit-card-balance {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: flex-end;
 
     a {
