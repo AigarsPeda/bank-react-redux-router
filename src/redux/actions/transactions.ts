@@ -4,6 +4,7 @@ import { ITransactions } from "../../types";
 import { RootStateType } from "../reducers";
 import {
   SetTransactionsActionTypes,
+  SET_CARD_TRANSACTIONS,
   SET_TRANSACTION,
   SET_TRANSACTION_IS_LOADING
 } from "../types/transactions.types";
@@ -58,6 +59,33 @@ export const getAllTransactions = (): AppThunk => async (dispatch) => {
 
     dispatch({
       type: SET_TRANSACTION,
+      payload: response
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// get specific card transaction
+export const getCardTransactions = (cardId: string): AppThunk => async (
+  dispatch
+) => {
+  try {
+    dispatch({
+      type: SET_TRANSACTION_IS_LOADING,
+      payload: true
+    });
+    // in callAPI if there are token in REDUX STORE
+    // it is added to AUTHORIZATION headers
+    const response: ITransactions[] = await callAPI({
+      url: `/transactions/${cardId}`,
+      method: "GET"
+    });
+
+    // console.log("RESPONSE xxxxxx: ", response);
+
+    dispatch({
+      type: SET_CARD_TRANSACTIONS,
       payload: response
     });
   } catch (error) {
