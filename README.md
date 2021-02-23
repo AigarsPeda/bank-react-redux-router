@@ -29,3 +29,8 @@ npm run build
 ## Back End code
 
 https://github.com/AigarsPeda/todo-express-auth-react
+
+<p align="center">
+  <img src="./screenshots/1.gif" width="800"/>
+
+</p>
