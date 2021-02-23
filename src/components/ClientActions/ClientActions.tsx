@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { creditCardType } from "../../helpers/creditCardType";
 import CreditCardChipIcon from "../../images/svg/CreditCardChipIcon";
 import SearchIcon from "../../images/svg/SearchIcon";
+import { getCards } from "../../redux/actions/cards";
 import { getLenderCards } from "../../redux/actions/loans";
 import { RootStateType } from "../../redux/reducers";
 import Carousel from "../Carousel/Carousel";
@@ -22,6 +23,7 @@ const ClientActions: React.FC = () => {
   };
 
   useEffect(() => {
+    dispatch(getCards());
     dispatch(getLenderCards());
   }, [dispatch]);
 
