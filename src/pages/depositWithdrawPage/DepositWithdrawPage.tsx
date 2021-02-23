@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { makeDeposit } from "../../redux/actions/cards";
 import { getCardTransactions } from "../../redux/actions/transactions";
 import { RootStateType } from "../../redux/reducers";
 
@@ -18,6 +19,7 @@ const DepositPage: React.FC = () => {
     amount: "",
     description: ""
   });
+  const [response, setResponse] = useState("");
 
   useEffect(() => {
     dispatch(getCardTransactions(id));
@@ -33,6 +35,22 @@ const DepositPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const amountInt = parseInt(deposit.amount);
+    const responseFromAPI: any = await dispatch(
+      makeDeposit(id, {
+        deposit_amount: amountInt,
+        deposit_description: deposit.description
+      })
+    );
+
+    // TODO: add value to cards in state
+
+    setResponse(responseFromAPI);
+    setDeposit({
+      amount: "",
+      description: ""
+    });
   };
 
   return (
@@ -55,6 +73,7 @@ const DepositPage: React.FC = () => {
             value={deposit.description}
           />
           <button type="submit">Make deposit</button>
+          <div>{response && response}</div>
         </form>
         Withdraw
       </div>
