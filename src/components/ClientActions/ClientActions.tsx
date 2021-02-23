@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { creditCardType } from "../../helpers/creditCardType";
 import CreditCardChipIcon from "../../images/svg/CreditCardChipIcon";
-import SearchIcon from "../../images/svg/SearchIcon";
 import { getCards } from "../../redux/actions/cards";
 import { getLenderCards } from "../../redux/actions/loans";
 import { RootStateType } from "../../redux/reducers";
 import Carousel from "../Carousel/Carousel";
 
 const ClientActions: React.FC = () => {
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const { cards, loanerCards } = useSelector((state: RootStateType) => ({
     cards: state.cards.cards,
     loanerCards: state.loans.lonerCards
   }));
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setSearch(value);
-  };
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { value } = e.target;
+  //   setSearch(value);
+  // };
 
   useEffect(() => {
     dispatch(getCards());
@@ -133,13 +132,6 @@ const ClientActions: React.FC = () => {
 
   return (
     <div className="client-actions">
-      <SearchIcon />
-      <input
-        type="text"
-        placeholder="Search"
-        onChange={handleChange}
-        value={search}
-      />
       <h3>Your cards:</h3>
       <div style={{ width: "350px", height: "200px", marginBottom: "50px" }}>
         <Carousel>{cardsNoWithDiv}</Carousel>
