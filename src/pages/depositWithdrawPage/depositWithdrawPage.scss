@@ -1,12 +1,42 @@
-.deposit-page {
+@use '../../scss/variables' as *;
+
+.deposit-withdraw-page {
   display: grid;
   grid-template-columns: 0.6fr 1.4fr;
   grid-template-rows: 1fr;
 
-  .deposit-actions {
+  .deposit-withdraw-actions {
     padding: 3.125rem; // 50px
     background-color: #ebf2fa;
     height: 100%;
+
+    .deposit-form {
+      display: flex;
+      flex-direction: column;
+      // justify-content: center;
+      // align-items: center;
+
+      input {
+        width: 100%;
+        height: 70px;
+        border: 2px solid $input-border;
+        border-radius: 11px;
+        background-color: #ebf2fa;
+        margin-top: 25px;
+        font-size: 18px;
+        font-weight: bold;
+        padding-left: 20px;
+        // display: block;
+
+        &:nth-child(2) {
+          margin-top: 7px;
+        }
+      }
+
+      // button {
+      //   display: block;
+      // }
+    }
   }
 
   .deposit-main {
