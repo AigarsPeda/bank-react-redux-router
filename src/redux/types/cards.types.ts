@@ -12,4 +12,13 @@ interface IClearCardsAction {
   type: typeof CLEAR_CARDS_DATA;
 }
 
-export type CardsActionTypes = ISetCardsAction | IClearCardsAction;
+export const LOADING_CARDS_DATA = "LOADING_CARDS_DATA";
+interface ILoadingCardsAction {
+  type: typeof LOADING_CARDS_DATA;
+  payload: boolean;
+}
+
+export type CardsActionTypes =
+  | ISetCardsAction
+  | IClearCardsAction
+  | ILoadingCardsAction;
