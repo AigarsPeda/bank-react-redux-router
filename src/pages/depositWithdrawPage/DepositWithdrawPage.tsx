@@ -19,7 +19,7 @@ const DepositPage: React.FC = () => {
     amount: "",
     description: ""
   });
-  const [response, setResponse] = useState("");
+  const [massage, setMessage] = useState("");
 
   useEffect(() => {
     dispatch(getCardTransactions(id));
@@ -37,7 +37,13 @@ const DepositPage: React.FC = () => {
     e.preventDefault();
 
     const amountInt = parseInt(deposit.amount);
-    const responseFromAPI: any = await dispatch(
+
+    if (amountInt <= 0 || deposit.amount.length === 0) {
+      setMessage("Number must bee positive!");
+      return;
+    }
+
+    const responseFromAPI = await dispatch(
       makeDeposit(id, {
         deposit_amount: amountInt,
         deposit_description: deposit.description
@@ -46,7 +52,7 @@ const DepositPage: React.FC = () => {
 
     // TODO: add value to cards in state
 
-    setResponse(responseFromAPI);
+    setMessage(responseFromAPI as any);
     setDeposit({
       amount: "",
       description: ""
@@ -54,13 +60,13 @@ const DepositPage: React.FC = () => {
   };
 
   return (
-    <div className="deposit-page">
-      <div className="deposit-actions">
-        <h1>Make deposit</h1>
-        <form onSubmit={handleSubmit}>
+    <div className="deposit-withdraw-page">
+      <div className="deposit-withdraw-actions">
+        <h1>Make deposit:</h1>
+        <form onSubmit={handleSubmit} className="deposit-form">
           <input
             type="number"
-            placeholder="Enter amount"
+            placeholder="Enter amount..."
             name="amount"
             onChange={handleChange}
             value={deposit.amount}
@@ -73,9 +79,9 @@ const DepositPage: React.FC = () => {
             value={deposit.description}
           />
           <button type="submit">Make deposit</button>
-          <div>{response && response}</div>
+          <div>{massage && massage}</div>
         </form>
-        Withdraw
+        <h1>Withdraw:</h1>
       </div>
       <div className="deposit-main">
         Some kind of stats
