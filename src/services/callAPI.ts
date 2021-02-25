@@ -19,12 +19,12 @@ interface IArgs {
   data?: Object;
 }
 
-export const callAPI = async ({ url, method, data }: IArgs) => {
+export const callAPI = async ({ url, method, data }: IArgs): Promise<any> => {
   const state = store.getState();
 
   const token = state.auth.token;
 
-  const options: IOptions = {
+  let options: IOptions = {
     method: method,
     headers: {
       // Accept: "application/json",
@@ -35,9 +35,15 @@ export const callAPI = async ({ url, method, data }: IArgs) => {
 
   // if there are data object add it to options
   if (data) {
-    options.body = JSON.stringify({
-      ...data
-    });
+    options = {
+      ...options,
+      body: JSON.stringify({
+        ...data
+      })
+    };
+    // options.body = JSON.stringify({
+    //   ...data
+    // });
   }
 
   const rawResponse = await fetch(`${BASE_URL}${url}`, options);
