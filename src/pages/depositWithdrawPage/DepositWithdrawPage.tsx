@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { makeDeposit } from "../../redux/actions/cards";
+import { makeDeposit, makeWithdraw } from "../../redux/actions/cards";
 import { getCardTransactions } from "../../redux/actions/transactions";
 import { RootStateType } from "../../redux/reducers";
 
@@ -74,6 +74,22 @@ const DepositPage: React.FC = () => {
 
   const handleWithdrawSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const amountInt = parseInt(withdraw.amount) * -1;
+
+    const responseFromAPI = await dispatch(
+      makeWithdraw(id, {
+        withdraw_amount: amountInt,
+        withdraw_description: withdraw.description
+      })
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setMessage(responseFromAPI as any);
+    setWithdraw({
+      amount: "",
+      description: ""
+    });
   };
 
   return (
@@ -126,7 +142,8 @@ const DepositPage: React.FC = () => {
           cardTransactions.map((transaction) => {
             return (
               <div key={transaction.transaction_id}>
-                {transaction.deposit_description}
+                Deposit: {transaction.deposit_description}
+                withdraw: {transaction.withdraw_description}
               </div>
             );
           })
