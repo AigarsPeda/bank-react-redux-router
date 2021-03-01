@@ -70,3 +70,39 @@ export const makeDeposit = (cardId: string, data: IDeposit): AppThunk => async (
     return "Something went wrong!";
   }
 };
+
+interface IWithdraw {
+  withdraw_amount: number;
+  withdraw_description: string;
+}
+
+export const makeWithdraw = (
+  cardId: string,
+  data: IWithdraw
+): AppThunk => async (dispatch) => {
+  dispatch({
+    type: LOADING_CARDS_DATA,
+    payload: true
+  });
+
+  try {
+    const response: string = await callAPI({
+      url: `/withdraw/${cardId}`,
+      method: "POST",
+      data: data
+    });
+
+    dispatch({
+      type: LOADING_CARDS_DATA,
+      payload: false
+    });
+
+    return response;
+
+    // console.log("response: ", response);
+  } catch (error) {
+    console.log(error);
+
+    return "Something went wrong!";
+  }
+};
