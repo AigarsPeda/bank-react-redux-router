@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { makeDeposit, makeWithdraw } from "../../redux/actions/cards";
 import { getCardTransactions } from "../../redux/actions/transactions";
 import { RootStateType } from "../../redux/reducers";
+import { isPositiveNumberEntered } from "../../utils/positiveNumberEntered";
 
 interface IParamTypes {
   id: string;
@@ -11,17 +12,17 @@ interface IParamTypes {
 
 const DepositPage: React.FC = () => {
   const { id } = useParams<IParamTypes>();
+
   const dispatch = useDispatch();
   const { cardTransactions } = useSelector((state: RootStateType) => ({
     cardTransactions: state.transactions.cardTransactions
   }));
-  const [deposit, setDeposit] = useState({
-    amount: "",
-    description: ""
-  });
-  const [withdraw, setWithdraw] = useState({
-    amount: "",
-    description: ""
+
+  const [state, setState] = useState({
+    depositAmount: "",
+    depositDescription: "",
+    withdrawAmount: "",
+    withdrawDescription: ""
   });
   const [massage, setMessage] = useState("");
 
@@ -29,17 +30,9 @@ const DepositPage: React.FC = () => {
     dispatch(getCardTransactions(id));
   }, [id, cardTransactions, dispatch]);
 
-  const handleChangeDepositForm = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setDeposit((state) => ({
-      ...state,
-      [name]: value
-    }));
-  };
-
-  const handleChangeWithdrawForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setWithdraw((state) => ({
+    setState((state) => ({
       ...state,
       [name]: value
     }));
@@ -48,47 +41,50 @@ const DepositPage: React.FC = () => {
   const handleDepositSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const amountInt = parseInt(deposit.amount);
-
-    if (amountInt <= 0 || deposit.amount.length === 0) {
-      setMessage("Number must bee positive!");
-      return;
+    if (!isPositiveNumberEntered(state.depositAmount)) {
+      return setMessage("Number must bee positive!");
     }
 
+    const amountInt = parseInt(state.depositAmount);
     const responseFromAPI = await dispatch(
       makeDeposit(id, {
         deposit_amount: amountInt,
-        deposit_description: deposit.description
+        deposit_description: state.depositDescription
       })
     );
 
-    // TODO: add value to cards in state
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setMessage(responseFromAPI as any);
-    setDeposit({
-      amount: "",
-      description: ""
+    setState({
+      depositAmount: "",
+      depositDescription: "",
+      withdrawAmount: "",
+      withdrawDescription: ""
     });
   };
 
   const handleWithdrawSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const amountInt = parseInt(withdraw.amount) * -1;
+    if (!isPositiveNumberEntered(state.withdrawAmount)) {
+      return setMessage("Number must bee positive!");
+    }
 
+    const amountInt = parseInt(state.withdrawAmount);
     const responseFromAPI = await dispatch(
       makeWithdraw(id, {
-        withdraw_amount: amountInt,
-        withdraw_description: withdraw.description
+        withdraw_amount: amountInt * -1,
+        withdraw_description: state.withdrawDescription
       })
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setMessage(responseFromAPI as any);
-    setWithdraw({
-      amount: "",
-      description: ""
+    setState({
+      depositAmount: "",
+      depositDescription: "",
+      withdrawAmount: "",
+      withdrawDescription: ""
     });
   };
 
@@ -100,16 +96,16 @@ const DepositPage: React.FC = () => {
           <input
             type="number"
             placeholder="Enter amount..."
-            name="amount"
-            onChange={handleChangeDepositForm}
-            value={deposit.amount}
+            name="depositAmount"
+            onChange={handleChange}
+            value={state.depositAmount}
           />
           <input
             type="text"
             placeholder="Description..."
-            name="description"
-            onChange={handleChangeDepositForm}
-            value={deposit.description}
+            name="depositDescription"
+            onChange={handleChange}
+            value={state.depositDescription}
           />
           <button type="submit">Make deposit</button>
           <div>{massage && massage}</div>
@@ -119,23 +115,22 @@ const DepositPage: React.FC = () => {
           <input
             type="number"
             placeholder="Enter amount..."
-            name="amount"
-            onChange={handleChangeWithdrawForm}
-            value={withdraw.amount}
+            name="withdrawAmount"
+            onChange={handleChange}
+            value={state.withdrawAmount}
           />
           <input
             type="text"
             placeholder="Description..."
-            name="description"
-            onChange={handleChangeWithdrawForm}
-            value={withdraw.description}
+            name="withdrawDescription"
+            onChange={handleChange}
+            value={state.withdrawDescription}
           />
           <button type="submit">Withdraw</button>
           <div>{massage && massage}</div>
         </form>
       </div>
       <div className="deposit-main">
-        Some kind of stats
         {!cardTransactions.length ? (
           <div>No transactions</div>
         ) : (
