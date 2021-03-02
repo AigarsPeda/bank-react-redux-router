@@ -199,10 +199,6 @@ const AccountOverview: React.FC = () => {
     }
   });
 
-  // TODO: get all cards transactions
-  // getTransactions(cardId);
-  // http://localhost:8000/transactions/1?start_date=15-01-2021&end_date=15-01-2021
-
   return (
     <div className="account-overview">
       {/* {console.log(
