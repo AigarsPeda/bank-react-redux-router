@@ -81,5 +81,11 @@
 
   .deposit-main {
     padding: 3.125rem; // 50px
+
+    .deposit-withdraw-table {
+      thead {
+        color: red;
+      }
+    }
   }
 }
