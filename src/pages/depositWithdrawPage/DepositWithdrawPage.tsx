@@ -136,7 +136,7 @@ const DepositPage: React.FC = () => {
         {!cardTransactions.length ? (
           <div>No transactions</div>
         ) : (
-          <table>
+          <table className="deposit-withdraw-table">
             <thead>
               <tr>
                 <th>Amount</th>
