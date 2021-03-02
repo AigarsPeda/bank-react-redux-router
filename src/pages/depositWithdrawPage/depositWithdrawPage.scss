@@ -8,7 +8,8 @@
   .deposit-withdraw-actions {
     padding: 3.125rem; // 50px
     background-color: #ebf2fa;
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
 
     .deposit-form {
       display: flex;
@@ -24,7 +25,6 @@
         font-size: 18px;
         font-weight: bold;
         padding-left: 20px;
-        // display: block;
 
         &:nth-child(2) {
           margin-top: 7px;
@@ -82,9 +82,36 @@
   .deposit-main {
     padding: 3.125rem; // 50px
 
-    .deposit-withdraw-table {
-      thead {
-        color: red;
+    .deposit-withdraw-table-container {
+      margin-top: 3.75rem;
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        thead {
+          text-align: left;
+          color: $secondary-text-color;
+        }
+
+        tfoot {
+          tr {
+            td {
+              padding: 0.75rem;
+              vertical-align: bottom;
+              border-bottom: 0.125rem solid $border-color; // 2px
+              font-weight: 600;
+            }
+
+            .withdraw {
+              color: $third-accent-color;
+            }
+
+            .deposit {
+              color: $secondary-accent-color;
+            }
+          }
+        }
       }
     }
   }
