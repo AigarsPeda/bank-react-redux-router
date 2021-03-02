@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { makeDeposit, makeWithdraw } from "../../redux/actions/cards";
@@ -90,6 +91,26 @@ const DepositPage: React.FC = () => {
     dispatch(getCardTransactions(id));
   };
 
+  const labelValues = cardTransactions.map((transaction) => {
+    return transaction.formatted_date;
+  });
+
+  const withdrawValues = cardTransactions.map((transaction) => {
+    if (transaction.withdraw_amount) {
+      return (+transaction.withdraw_amount * -1).toString();
+    } else {
+      return "0";
+    }
+  });
+
+  const depositValues = cardTransactions.map((transaction) => {
+    if (transaction.deposit_amount) {
+      return transaction.deposit_amount;
+    } else {
+      return "0";
+    }
+  });
+
   return (
     <div className="deposit-withdraw-page">
       <div className="deposit-withdraw-actions">
@@ -133,40 +154,91 @@ const DepositPage: React.FC = () => {
         </form>
       </div>
       <div className="deposit-main">
-        {!cardTransactions.length ? (
-          <div>No transactions</div>
-        ) : (
-          <table className="deposit-withdraw-table">
-            <thead>
-              <tr>
-                <th>Amount</th>
-                <th>Description</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tfoot>
-              {cardTransactions.map((transaction) => {
-                return (
-                  <tr key={transaction.transaction_id}>
-                    {transaction.withdraw_amount && (
-                      <td> {transaction.withdraw_amount} </td>
-                    )}
-                    {transaction.deposit_amount && (
-                      <td> {transaction.deposit_amount} </td>
-                    )}
-                    {transaction.withdraw_description && (
-                      <td> {transaction.withdraw_description} </td>
-                    )}
-                    {transaction.deposit_description && (
-                      <td> {transaction.deposit_description} </td>
-                    )}
-                    <td>{transaction.formatted_date}</td>
-                  </tr>
-                );
-              })}
-            </tfoot>
-          </table>
-        )}
+        <div>
+          <Line
+            data={{
+              labels: labelValues,
+              datasets: [
+                {
+                  label: "# of deposit",
+                  data: depositValues,
+                  backgroundColor: ["rgba(255, 99, 132, 0.2)"],
+                  borderColor: ["rgba(255, 99, 132, 1)"],
+                  borderWidth: 1
+                },
+                {
+                  label: "# of withdraw",
+                  data: withdrawValues,
+                  backgroundColor: ["rgba(54, 162, 235, 0.2)"],
+                  borderColor: ["rgba(54, 162, 235, 1)"],
+                  borderWidth: 1
+                }
+              ]
+            }}
+            width={100}
+            height={35}
+            options={{
+              maintainAspectRatio: true,
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      fontSize: 16,
+                      beginAtZero: true
+                    }
+                  }
+                ],
+                xAxes: [
+                  {
+                    ticks: {
+                      fontSize: 16
+                    }
+                  }
+                ]
+              }
+            }}
+          />
+        </div>
+        <div className="deposit-withdraw-table-container">
+          {!cardTransactions.length ? (
+            <div>No transactions</div>
+          ) : (
+            <table className="deposit-withdraw-table">
+              <thead>
+                <tr>
+                  <th>Amount</th>
+                  <th>Description</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tfoot>
+                {cardTransactions.map((transaction) => {
+                  return (
+                    <tr key={transaction.transaction_id}>
+                      {transaction.withdraw_amount && (
+                        <td className="withdraw">
+                          {transaction.withdraw_amount}{" "}
+                        </td>
+                      )}
+                      {transaction.deposit_amount && (
+                        <td className="deposit">
+                          {transaction.deposit_amount}{" "}
+                        </td>
+                      )}
+                      {transaction.withdraw_description && (
+                        <td> {transaction.withdraw_description} </td>
+                      )}
+                      {transaction.deposit_description && (
+                        <td> {transaction.deposit_description} </td>
+                      )}
+                      <td>{transaction.formatted_date}</td>
+                    </tr>
+                  );
+                })}
+              </tfoot>
+            </table>
+          )}
+        </div>
       </div>
     </div>
   );
