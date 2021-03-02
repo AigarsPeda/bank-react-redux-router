@@ -28,7 +28,7 @@ const DepositPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(getCardTransactions(id));
-  }, [id, cardTransactions, dispatch]);
+  }, [id, dispatch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -61,6 +61,7 @@ const DepositPage: React.FC = () => {
       withdrawAmount: "",
       withdrawDescription: ""
     });
+    dispatch(getCardTransactions(id));
   };
 
   const handleWithdrawSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -86,6 +87,7 @@ const DepositPage: React.FC = () => {
       withdrawAmount: "",
       withdrawDescription: ""
     });
+    dispatch(getCardTransactions(id));
   };
 
   return (
@@ -134,14 +136,36 @@ const DepositPage: React.FC = () => {
         {!cardTransactions.length ? (
           <div>No transactions</div>
         ) : (
-          cardTransactions.map((transaction) => {
-            return (
-              <div key={transaction.transaction_id}>
-                Deposit: {transaction.deposit_description}
-                withdraw: {transaction.withdraw_description}
-              </div>
-            );
-          })
+          <table>
+            <thead>
+              <tr>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tfoot>
+              {cardTransactions.map((transaction) => {
+                return (
+                  <tr key={transaction.transaction_id}>
+                    {transaction.withdraw_amount && (
+                      <td> {transaction.withdraw_amount} </td>
+                    )}
+                    {transaction.deposit_amount && (
+                      <td> {transaction.deposit_amount} </td>
+                    )}
+                    {transaction.withdraw_description && (
+                      <td> {transaction.withdraw_description} </td>
+                    )}
+                    {transaction.deposit_description && (
+                      <td> {transaction.deposit_description} </td>
+                    )}
+                    <td>{transaction.formatted_date}</td>
+                  </tr>
+                );
+              })}
+            </tfoot>
+          </table>
         )}
       </div>
     </div>
