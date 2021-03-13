@@ -1,4 +1,4 @@
-export const isToken = (value: string) => {
+export const isToken = (value: string): boolean => {
   if (
     value === undefined ||
     value === null ||
