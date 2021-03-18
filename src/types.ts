@@ -46,3 +46,5 @@ export type ITransactions = {
   deposit_description: string | null;
   withdraw_description: string | null;
 };
+
+export type IPeriods = "year" | "day" | "week" | "month";
