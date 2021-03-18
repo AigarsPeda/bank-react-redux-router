@@ -1,8 +1,8 @@
-import { ITransactions } from "../types";
+import { IPeriods, ITransactions } from "../types";
 
 export const reduceTransactionsUniquePerDay = (
   transactions: ITransactions[],
-  period: "year" | "day" | "week" | "month"
+  period: IPeriods
 ): ITransactions[] =>
   transactions.reduce((accumulator: ITransactions[], current) => {
     if (period === "year") {
