@@ -8,6 +8,8 @@
 @use './components/NavBar/navBar';
 @use './components/ClientActions/clientActions';
 @use './components/AccountOverview/accountOverview';
+@use "./components/CardsNumberWithDiv/cardsNumberWithDiv";
+@use "./components/LoanerCardsWithDiv/loanerCardsWithDiv";
 
 // carousel
 @use './components/Carousel/carousel';
