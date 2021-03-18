@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
+import types from "webpack";
 import { reduceTransactionsUniquePerDay } from "../../helpers/reduceTransactionsUniquePerDay";
 import { getCards } from "../../redux/actions/cards";
 import {
@@ -9,9 +10,7 @@ import {
 } from "../../redux/actions/transactions";
 import { getUser } from "../../redux/actions/user";
 import { RootStateType } from "../../redux/reducers";
-import { ITransactions } from "../../types";
-
-// defaults.global.elements.line.tension = 0;
+import { IPeriods, ITransactions } from "../../types";
 
 const AccountOverview: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,13 +27,10 @@ const AccountOverview: React.FC = () => {
   }));
 
   const [cardId, setCardsId] = useState("all_transactions");
-  const [period, setPeriod] = useState<"year" | "day" | "week" | "month">(
-    "year"
-  );
+  const [period, setPeriod] = useState<IPeriods>("year");
 
   const getWrightTransactions = useCallback(() => {
     if (cardId === "all_transactions") {
-      // console.log("te");
       dispatch(getAllTransactions());
     } else {
       dispatch(getTransactions(cardId));
