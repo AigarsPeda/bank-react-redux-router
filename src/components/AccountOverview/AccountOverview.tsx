@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
-import types from "webpack";
 import { reduceTransactionsUniquePerDay } from "../../helpers/reduceTransactionsUniquePerDay";
 import { getCards } from "../../redux/actions/cards";
 import {
