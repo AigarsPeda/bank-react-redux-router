@@ -15,12 +15,6 @@ const DashboardPage: React.FC = React.memo(() => {
     return <Redirect to="/login" />;
   }
 
-  // const test = async () => {
-  //   const res = await callAPI({ url: "/transactions/1", method: "get" });
-
-  //   console.log("RES: ", res);
-  // };
-
   return (
     <div className="dashboard-page">
       <div className="dashboard-actions">
