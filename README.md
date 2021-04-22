@@ -30,6 +30,8 @@ npm run build
 
 https://github.com/AigarsPeda/bank-express-jwt-postgresql-api
 
+---
+
 <p align="center">
   <img src="./screenshots/1.gif" width="800"/>
   <img src="./screenshots/2.jpg" width="800"/>
