@@ -28,7 +28,7 @@ npm run build
 
 ## Back End code
 
-https://github.com/AigarsPeda/todo-express-auth-react
+https://github.com/AigarsPeda/bank-express-jwt-postgresql-api
 
 <p align="center">
   <img src="./screenshots/1.gif" width="800"/>
